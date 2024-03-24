@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-const AFrameScene = dynamic(() => import('../components/AFrameScene'), {
+const AFrameScene = dynamic(() => import('@/components/AFrameScene'), {
   ssr: false,
 });
 
