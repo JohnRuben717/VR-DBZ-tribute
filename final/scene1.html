@@ -14,17 +14,16 @@
                 init: function () {
                     // Reference to the text entity
                     var infoText = this.el.querySelector('a-text');
+                var infoVideo = this.el.querySelector('a-video');
 
-                    this.el.addEventListener('raycaster-intersected', function () {
-                        if (infoText) {
-                            infoText.setAttribute('visible', true); // Show text
-                        }
-                    });
-                    this.el.addEventListener('raycaster-intersected-cleared', function () {
-                        if (infoText) {
-                            infoText.setAttribute('visible', false); // Hide text
-                        }
-                    });
+                this.el.addEventListener('raycaster-intersected', () => {
+                    infoText.setAttribute('visible', true);
+                    infoVideo.setAttribute('visible', true);
+                });
+                this.el.addEventListener('raycaster-intersected-cleared', () => {
+                    infoText.setAttribute('visible', false);
+                    infoVideo.setAttribute('visible', false);
+                });
                 }
             });
 
@@ -54,6 +53,10 @@
             <a-asset-item id="GokuSSJ" src="assets/goku_super_saiyan/scene.gltf"></a-asset-item>
             <a-asset-item id="GokuSSJ2" src="assets/goku_ssj2/scene.gltf"></a-asset-item>
             <a-asset-item id="GokuSSJ3" src="assets/goku_ssj3/scene.gltf"></a-asset-item>
+            <video id="GokuBasevid" autoplay loop="true" src="assets/videos/GokuBase.mp4"></video>
+            <video id="GokuSSJ3vid" autoplay loop="true" src="assets/videos/GokuSSJ3 - Made with Clipchamp.mp4"></video>
+            <video id="GokuSSJ2vid" autoplay loop="true" src="assets/videos/stabsololvl.mp4"></video>
+            <video id="GokuSSJvid" autoplay loop="true" src="assets/videos/stabsololvl.mp4"></video>
 
 
         </a-assets> 
@@ -66,23 +69,26 @@
         <a-entity gltf-model="#GokuBase" animation-mixer="clip: Idle" position="-10 0.3 -3" scale="1.5 1.5 1.5"
             class="interactive">
             <a-text value="Base Goku" position="0.5 2 -1" scale="1.5 1.5 1.5" visible="false"></a-text>
-            <!-- <a-video src="#solostab" width="8" height="4.5"  position="0 10 -10"  rotation="0 0 0" visible="false"></a-video> -->
+            <a-video src="#GokuBasevid" width="8" height="4.5"  position="0 10 -10"  rotation="0 0 0" visible="false"></a-video>
         </a-entity>
 
         <!-- Goku SSJ Model -->
         <a-entity gltf-model="#GokuSSJ" position=" -5 0.3 -3" scale="0.1 0.1 0.1" class="interactive">
             <a-text value="Goku SSJ" position="5 30 -1" scale="28 28 28" visible="false"></a-text>
-            <!-- <a-video src="#solostab" width="80" height="45" position="0 100 -100" rotation="0 0 0" visible="false"></a-video> -->
+            <a-video src="#GokuSSJvid" width="80" height="45" position="0 100 -100" rotation="0 0 0" visible="false"></a-video>
         </a-entity>
 
         <!-- Goku SSJ2 Model -->
         <a-entity gltf-model="#GokuSSJ2" position="1 0.3 -3" scale=".5 .5 .5" rotation="0 1000 0" class="interactive">
             <a-text value="Goku SSJ2" position=".7 5 -3" scale="5 5 5" visible="false" rotation="0 -1000 0"></a-text>
+            <a-video src="#GokuSSJ2vid" width="16" height="9"  position="-5 15 -5"  rotation="0 -1000 0" visible="false"></a-video>
+
         </a-entity>
 
         <!-- Goku SSJ3 Model -->
         <a-entity gltf-model="#GokuSSJ3" position="7 0.3 -3" scale="1.9 1.9 1.9" class="interactive">
             <a-text value="Goku SSJ3" position="1.1 1 -1" scale="2 2 2" visible="false"></a-text>
+            <a-video src="#GokuSSJ3vid" width="8" height="4.5"  position="0 10 -10"  rotation="0 0 0" visible="false"></a-video>
         </a-entity>
         <a-entity id="player" camera look-controls="pointerLockEnabled: true" wasd-controls universal-controls
             kinematic-body position="0 3 5">
@@ -91,18 +97,7 @@
     </a-scene>
 
     <script>
-        AFRAME.registerComponent('hover-listener', {
-            init: function () {
-                var infoText = this.el.querySelector('a-text');
 
-                this.el.addEventListener('raycaster-intersected', () => {
-                    infoText.setAttribute('visible', true);
-                });
-                this.el.addEventListener('raycaster-intersected-cleared', () => {
-                    infoText.setAttribute('visible', false);
-                });
-            }
-        });
 
         document.addEventListener('DOMContentLoaded', () => {
             setupInteractiveEntities();
