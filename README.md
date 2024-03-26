@@ -7,3 +7,5 @@ it should run as is.
 We used only the aframe-extras extension.
 
  Older versions and iterations are available on the older commits.
+
+The main Branch is the johnruben branch.
