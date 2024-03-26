@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Goku Transformation</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script
+        src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@7.4/dist/aframe-extras.min.js"></script>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-layout-component@5.3.0/dist/aframe-layout-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>
+    <script
+        src="https://unpkg.com/aframe-proxy-event-component@2.1.0/dist/aframe-proxy-event-component.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v$npm_package_version/dist/aframe-physics-system.min.js"></script> -->
+
+    <script id="link" type="text/html">
+        <a-entity class="link"
+          geometry="primitive: plane; height: 1; width: 1"
+          material="shader: flat; src: ${thumb}"
+          event-set__mouseenter="scale: 1.2 1.2 1"
+          event-set__mouseleave="scale: 1 1 1"
+          event-set__click="_target: #image-360; _delay: 300; material.src: ${src}"
+          proxy-event="event: click; to: #image-360; as: fade"
+          sound="on: click; src: #click-sound"></a-entity>
+      </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            AFRAME.registerComponent('hover-listener', {
+                init: function () {
+                    // Reference to the text entity
+                    var infoText = this.el.querySelector('a-text');
+                    var infoVideo = this.el.querySelector('a-video');
+
+                    this.el.addEventListener('raycaster-intersected', () => {
+                        infoText.setAttribute('visible', true);
+                        infoVideo.setAttribute('visible', true);
+                        // Add an animation to move the model slightly upwards on the Z-axis
+                        this.el.setAttribute('animation', {
+                            property: 'position',
+                            to: { x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z - 0.2 }, // Move up along the Z-axis
+                            dur: 500,
+                            easing: 'easeOutCubic'
+                        });
+                    });
+                    this.el.addEventListener('raycaster-intersected-cleared', () => {
+                        infoText.setAttribute('visible', false);
+                        infoVideo.setAttribute('visible', false);
+                        // Reset the position back to the original position on the Z-axis
+                        this.el.setAttribute('animation', {
+                            property: 'position',
+                            to: { x: this.el.object3D.position.x + 0.2, y: this.el.object3D.position.y, z: this.el.object3D.position.z + 0.2 }, // Move back down along the Z-axis
+                            dur: 500,
+                            easing: 'easeOutCubic'
+                        });
+                    });
+                }
+            });
+
+            var sceneEl = document.querySelector('a-scene');
+            if (sceneEl.hasLoaded) {
+                setupInteractiveEntities();
+            } else {
+                sceneEl.addEventListener('loaded', setupInteractiveEntities);
+            }
+
+            function setupInteractiveEntities() {
+                document.querySelectorAll('.interactive').forEach((entity) => {
+                    entity.setAttribute('hover-listener', '');
+                });
+            }
+        });
+    </script>
+
+
+</head>
+
+<body>
+    <a-scene reflection="directionalLight:a-light#dirlight;">
+        <a-assets>
+            <a-asset-item id="GokuBase" src="assets/goku_rigged__animated/scene.gltf"></a-asset-item>
+            <a-asset-item id="GokuSSJ" src="assets/goku_super_saiyan/scene.gltf"></a-asset-item>
+            <a-asset-item id="GokuSSJ2" src="assets/goku_ssj2/scene.gltf"></a-asset-item>
+            <a-asset-item id="GokuSSJ3" src="assets/goku_ssj3/scene.gltf"></a-asset-item>
+            <video id="GokuBasevid" autoplay loop="true" src="assets/videos/GokuBase.mp4"></video>
+            <video id="GokuSSJ3vid" autoplay loop="true" src="assets/videos/GokuSSJ3 - Made with Clipchamp.mp4"></video>
+            <video id="GokuSSJ2vid" autoplay loop="true" src="assets/videos/GokuSSJ2.mp4"></video>
+            <video id="GokuSSJvid" autoplay loop="true" src="assets/videos/GokuSSJ.mp4"></video>
+
+            <img id="city" crossorigin="anonymous"
+                src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/city.jpg">
+            <img id="city-thumb" crossorigin="anonymous"
+                src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/thumb-city.jpg">
+            <img id="cubes-thumb" crossorigin="anonymous"
+                src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/thumb-cubes.jpg">
+            <img id="sechelt-thumb" crossorigin="anonymous"
+                src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/thumb-sechelt.jpg">
+            <audio id="click-sound" crossorigin="anonymous"
+                src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
+            <img id="cubes" crossorigin="anonymous"
+                src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/cubes.jpg">
+            <img id="sechelt" crossorigin="anonymous"
+                src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg">
+
+
+        </a-assets>
+        <!-- <a-sky src="assets/dragon.jpg"></a-sky> -->
+        <a-sky id="image-360" radius="100" src="#city"
+            animation__fade="property: components.material.material.color; type: color; from: #FFF; to: #000; dur: 300; startEvents: fade"
+            animation__fadeback="property: components.material.material.color; type: color; from: #000; to: #FFF; dur: 300; startEvents: animationcomplete__fade"></a-sky>
+
+        <a-entity id="links" layout="type: line; margin: 1.5" position="-1 -2 5">
+            <a-entity template="src: #link" data-src="#cubes" data-thumb="#cubes-thumb"></a-entity>
+            <a-entity template="src: #link" data-src="#city" data-thumb="#city-thumb"></a-entity>
+            <a-entity template="src: #link" data-src="#sechelt" data-thumb="#sechelt-thumb"></a-entity>
+        </a-entity>
+
+        <a-entity id="planeforLevel" geometry="primitive: box" material="color: red" position="0 0 -5"
+            scale="100 0.2 15"></a-entity>
+
+        <!-- Goku Model -->
+        <a-entity gltf-model="#GokuBase" animation-mixer="clip: Idle" position="-10 0.3 -3" scale="1.5 1.5 1.5"
+            class="interactive">
+            <a-text value="Base Goku" position="0.5 2 -1" color="black" scale="1.5 1.5 1.5" visible="false"></a-text>
+            <a-video src="#GokuBasevid" width="8" height="4.5" position="0 10 -10" rotation="0 0 0"
+                visible="false"></a-video>
+        </a-entity>
+
+        <!-- Goku SSJ Model -->
+        <a-entity gltf-model="#GokuSSJ" position=" -5 0.3 -3" scale="0.1 0.1 0.1" class="interactive">
+            <a-text value="Goku SSJ" position="5 30 -1" scale="28 28 28" visible="false" color="black"></a-text>
+            <a-video src="#GokuSSJvid" width="80" height="45" position="0 100 -100" rotation="0 0 0"
+                visible="false"></a-video>
+        </a-entity>
+
+        <!-- Goku SSJ2 Model -->
+        <a-entity gltf-model="#GokuSSJ2" position="1 0.3 -3" scale=".5 .5 .5" rotation="0 1000 0" class="interactive">
+            <a-text value="Goku SSJ2" position=".7 5 -3" scale="5 5 5" visible="false" rotation="0 -1000 0"
+                color="black"></a-text>
+            <a-video src="#GokuSSJ2vid" width="16" height="9" position="-5 15 -5" rotation="0 -1000 0"
+                visible="false"></a-video>
+
+        </a-entity>
+
+        <!-- Goku SSJ3 Model -->
+        <a-entity gltf-model="#GokuSSJ3" position="7 0.3 -3" scale="1.9 1.9 1.9" class="interactive">
+            <a-text value="Goku SSJ3" position="1.1 1 -1" scale="2 2 2" visible="false" color="black"></a-text>
+            <a-video src="#GokuSSJ3vid" width="8" height="4.5" position="0 10 -10" rotation="0 0 0"
+                visible="false"></a-video>
+        </a-entity>
+        <a-entity id="player" camera look-controls="pointerLockEnabled: true" wasd-controls universal-controls
+            kinematic-body position="0 3 12">
+            <a-cursor id="cursor"
+                animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150"
+                animation__fusing="property: fusing; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500"
+                event-set__mouseenter="_event: mouseenter; color: springgreen"
+                event-set__mouseleave="_event: mouseleave; color: black" raycaster="objects: .link"></a-cursor>
+        </a-entity>
+        </a-entity>
+    </a-scene>
+
+    <script>
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupInteractiveEntities();
+        });
+
+        function setupInteractiveEntities() {
+            document.querySelectorAll('.interactive').forEach(entity => {
+                entity.setAttribute('hover-listener', '');
+            });
+        }
+    </script>
+</body>
+
+</html>
