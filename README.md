@@ -17,6 +17,7 @@ This project recreates the iconic scene of Goku's first transformation in 3D usi
 
 1. Clone the repository to your local machine.
 2. Ensure that you have any necessary dependencies installed. This project relies on A-Frame and the aframe-extras extension.
+3. GokuSSJ.mp4 and GokuSSJ3.mp4 in the final/assets/videos (reson the video file size were big)
 
 ## Usage
 
