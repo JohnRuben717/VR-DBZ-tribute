@@ -2,74 +2,100 @@
 <html>
 
 <head>
-  <title>A-Frame Scene</title>
-  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-  <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
-  <script
-    src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v$npm_package_version/dist/aframe-physics-system.min.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      AFRAME.registerComponent('hover-listener', {
-        init: function () {
-          // Reference to the text entity
-          var infoText = this.el.querySelector('a-text');
+    <title>Goku Transformation</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script
+        src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@7.4/dist/aframe-extras.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v$npm_package_version/dist/aframe-physics-system.min.js"></script> -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            AFRAME.registerComponent('hover-listener', {
+                init: function () {
+                    // Reference to the text entity
+                    var infoText = this.el.querySelector('a-text');
 
-          this.el.addEventListener('raycaster-intersected', function () {
-            if (infoText) {
-              infoText.setAttribute('visible', true); // Show text
+                    this.el.addEventListener('raycaster-intersected', function () {
+                        if (infoText) {
+                            infoText.setAttribute('visible', true); // Show text
+                        }
+                    });
+                    this.el.addEventListener('raycaster-intersected-cleared', function () {
+                        if (infoText) {
+                            infoText.setAttribute('visible', false); // Hide text
+                        }
+                    });
+                }
+            });
+
+
+            // This ensures components are registered before attaching them
+            var sceneEl = document.querySelector('a-scene');
+            if (sceneEl.hasLoaded) {
+                setupInteractiveEntities();
+            } else {
+                sceneEl.addEventListener('loaded', setupInteractiveEntities);
             }
-          });
-          this.el.addEventListener('raycaster-intersected-cleared', function () {
-            if (infoText) {
-              infoText.setAttribute('visible', false); // Hide text
+
+            function setupInteractiveEntities() {
+                document.querySelectorAll('.interactive').forEach((entity) => {
+                    
+                    entity.setAttribute('hover-listener', '');
+                });
             }
-          });
-        }
-      });
-
-
-      // This ensures components are registered before attaching them
-      var sceneEl = document.querySelector('a-scene');
-      if (sceneEl.hasLoaded) {
-        setupInteractiveEntities();
-      } else {
-        sceneEl.addEventListener('loaded', setupInteractiveEntities);
-      }
-
-      function setupInteractiveEntities() {
-        document.querySelectorAll('.interactive').forEach((entity) => {
-          entity.setAttribute('hover-listener', '');
         });
-      }
-    });
-  </script>
+    </script>
 </head>
 
 <body>
-  <a-scene physics="debug: true" loading-screen="dotsColor: red; backgroundColor: black"
-    fog="type: linear; color: #AAA">
-    <!-- load all the assets -->
-    <a-assets>
-      <a-asset-item id="GokuBase" src="assets/goku_super_saiyan/scene.gltf"></a-asset-item>
-    </a-assets>
-<!-- creating entity for the plane -->
-    <a-entity id="planeforLevel" geometry="primitive: box" material="color: red" position="0 0 -5" scale="100 0.2 15"
-      class="collidable"></a-entity>
-      <!-- laoding goku  model -->
-    <a-entity gltf-model="#GokuBase" modify-materials position="0 0.3 -3" scale="0.1 0.1 0.1" class="interactive"
-      raycaster="objects: .collidable; showLine: true;">
-      <!-- Text entity acting as a popup, initially invisible -->
-      <a-text value="Model Information Here" position="10 25.3 5" scale="15 15 10" visible="false"></a-text>
-    </a-entity>
-    <!-- creating sky -->
-    <a-sky color="#6EBAA7"></a-sky>
-    <!-- creating light -->
-    <a-entity id="player" camera look-controls="pointerLockEnabled: true" wasd-controls universal-controls
-      kinematic-body position="0 3 5">
-      
-      <a-cursor></a-cursor>
-    </a-entity>
-  </a-scene>
-</body>
+    <a-scene>
+        <a-assets>
+            <a-asset-item id="GokuBase" src="assets/goku_rigged__animated/scene.gltf"></a-asset-item>
+            <a-asset-item id="GokuSSJ" src="assets/goku_super_saiyan/scene.gltf"></a-asset-item>
+        </a-assets>
+        <a-sky src="assets/bg2.jpg"></a-sky>
 
+        <a-entity id="planeforLevel" geometry="primitive: box" material="color: red" position="0 0 -5" scale="100 0.2 15"></a-entity>
+
+        <!-- Goku Model -->
+        <a-entity gltf-model="#GokuBase" animation-mixer="clip: Idle" position="5 0.3 -3" scale="1.5 1.5 1.5" class="interactive">
+            <a-text value="Base Goku" position="1 2 0"  scale="2 2 2" visible="false"></a-text>
+
+        </a-entity>
+
+        <!-- Goku SSJ Model -->
+        <a-entity gltf-model="#GokuSSJ" position="0 0.3 -3" scale="0.1 0.1 0.1" class="interactive">
+            <a-text value="Goku SSJ" position="10 25.3 5" scale="15 15 10" visible="false"></a-text>
+        </a-entity>
+
+        <a-entity id="player" camera look-controls="pointerLockEnabled: true" wasd-controls universal-controls kinematic-body position="0 3 5">
+            <a-cursor></a-cursor>
+        </a-entity>
+    </a-scene>
+
+    <script>
+        AFRAME.registerComponent('hover-listener', {
+            init: function () {
+                var infoText = this.el.querySelector('a-text');
+                
+                this.el.addEventListener('raycaster-intersected', () => {
+                    infoText.setAttribute('visible', true);
+                });
+                this.el.addEventListener('raycaster-intersected-cleared', () => {
+                    infoText.setAttribute('visible', false);
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupInteractiveEntities();
+        });
+
+        function setupInteractiveEntities() {
+            document.querySelectorAll('.interactive').forEach(entity => {
+                entity.setAttribute('hover-listener', '');
+            });
+        }
+    </script>
+</body>
 </html>
