@@ -15,48 +15,52 @@
                     // Reference to the text entity
                     var infoText = this.el.querySelector('a-text');
                     var infoVideo = this.el.querySelector('a-video');
-    
+                    
                     this.el.addEventListener('raycaster-intersected', () => {
+                        // console.log(document.getElementById(vidId));
+                        // document.getElementById(vidId).play();
                         infoText.setAttribute('visible', true);
                         infoVideo.setAttribute('visible', true);
                         // Add an animation to move the model slightly upwards on the Z-axis
                         this.el.setAttribute('animation', {
                             property: 'position',
-                            to: {x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z - 0.2}, // Move up along the Z-axis
+                            to: { x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z - 0.2 }, // Move up along the Z-axis
                             dur: 500,
                             easing: 'easeOutCubic'
                         });
                     });
                     this.el.addEventListener('raycaster-intersected-cleared', () => {
+                        // document.getElementById(vidId).pause();
                         infoText.setAttribute('visible', false);
                         infoVideo.setAttribute('visible', false);
                         // Reset the position back to the original position on the Z-axis
                         this.el.setAttribute('animation', {
                             property: 'position',
-                            to: {x: this.el.object3D.position.x +0.2, y: this.el.object3D.position.y, z: this.el.object3D.position.z + 0.2}, // Move back down along the Z-axis
+                            to: { x: this.el.object3D.position.x , y: this.el.object3D.position.y, z: this.el.object3D.position.z + 0.2 }, // Move back down along the Z-axis
                             dur: 500,
                             easing: 'easeOutCubic'
                         });
                     });
                 }
             });
-    
+
             var sceneEl = document.querySelector('a-scene');
             if (sceneEl.hasLoaded) {
                 setupInteractiveEntities();
             } else {
                 sceneEl.addEventListener('loaded', setupInteractiveEntities);
             }
-    
+
             function setupInteractiveEntities() {
                 document.querySelectorAll('.interactive').forEach((entity) => {
                     entity.setAttribute('hover-listener', '');
                 });
             }
         });
+   
     </script>
-    
-    
+
+
 </head>
 
 <body>
@@ -66,13 +70,14 @@
             <a-asset-item id="GokuSSJ" src="assets/goku_super_saiyan/scene.gltf"></a-asset-item>
             <a-asset-item id="GokuSSJ2" src="assets/goku_ssj2/scene.gltf"></a-asset-item>
             <a-asset-item id="GokuSSJ3" src="assets/goku_ssj3/scene.gltf"></a-asset-item>
-            <video id="GokuBasevid" autoplay loop="true" src="assets/videos/GokuBase.mp4"></video>
-            <video id="GokuSSJ3vid" autoplay loop="true" src="assets/videos/GokuSSJ3 - Made with Clipchamp.mp4"></video>
-            <video id="GokuSSJ2vid" autoplay loop="true" src="assets/videos/GokuSSJ2.mp4"></video>
-            <video id="GokuSSJvid" autoplay loop="true" src="assets/videos/GokuSSJ.mp4"></video>
+            <video id="GokuBasevid" autoplay  loop="true" src="assets/videos/GokuBase.mp4"></video>
+            <video id="GokuSSJ3vid" autoplay muted loop="true" src="assets/videos/GokuSSJ3 - Made with Clipchamp.mp4"></video>
+            <video id="GokuSSJ2vid" autoplay muted loop="true" src="assets/videos/GokuSSJ2.mp4"></video>
+            <video id="GokuSSJvid" autoplay muted loop="true" src="assets/videos/GokuSSJ.mp4"></video>
 
 
         </a-assets>
+
         <a-sky src="assets/dragon.jpg"></a-sky>
 
         <a-entity id="planeforLevel" geometry="primitive: box" material="color: red" position="0 0 -5"
@@ -83,14 +88,14 @@
             class="interactive">
             <a-text value="Base Goku" position="0.5 2 -1" color="black" scale="1.5 1.5 1.5" visible="false"></a-text>
             <a-video src="#GokuBasevid" width="8" height="4.5" position="0 10 -10" rotation="0 0 0"
-                visible="false"></a-video>
+                visible="false" play-on-visible="target: #GokuBasevid"></a-video>
         </a-entity>
 
         <!-- Goku SSJ Model -->
-        <a-entity gltf-model="#GokuSSJ" position=" -5 0.3 -3" scale="0.1 0.1 0.1" class="interactive">
+        <a-entity gltf-model="#GokuSSJ" position=" -5 0.3 -3" scale="0.1 0.1 0.1" class="interactive" >
             <a-text value="Goku SSJ" position="5 30 -1" scale="28 28 28" visible="false" color="black"></a-text>
             <a-video src="#GokuSSJvid" width="80" height="45" position="0 100 -100" rotation="0 0 0"
-                visible="false"></a-video>
+                visible="false" play-on-visible="target: #GokuSSJvid"></a-video>
         </a-entity>
 
         <!-- Goku SSJ2 Model -->
@@ -98,7 +103,7 @@
             <a-text value="Goku SSJ2" position=".7 5 -3" scale="5 5 5" visible="false" rotation="0 -1000 0"
                 color="black"></a-text>
             <a-video src="#GokuSSJ2vid" width="16" height="9" position="-5 15 -5" rotation="0 -1000 0"
-                visible="false"></a-video>
+                visible="false" play-on-visible="target: #GokuSSJ2vid"></a-video>
 
         </a-entity>
 
@@ -106,7 +111,7 @@
         <a-entity gltf-model="#GokuSSJ3" position="7 0.3 -3" scale="1.9 1.9 1.9" class="interactive">
             <a-text value="Goku SSJ3" position="1.1 1 -1" scale="2 2 2" visible="false" color="black"></a-text>
             <a-video src="#GokuSSJ3vid" width="8" height="4.5" position="0 10 -10" rotation="0 0 0"
-                visible="false"></a-video>
+                visible="false" play-on-visible="target: #GokuSSJ3vid"></a-video>
         </a-entity>
         <a-entity id="player" camera look-controls="pointerLockEnabled: true" wasd-controls universal-controls
             kinematic-body position="0 3 12">
@@ -126,6 +131,23 @@
                 entity.setAttribute('hover-listener', '');
             });
         }
+        AFRAME.registerComponent('play-on-visible', {
+            schema: {
+                target: { type: 'selector' }
+            },
+            init: function () {
+                this.el.addEventListener('componentchanged', (evt) => {
+                    if (evt.detail.name === 'visible') {
+                        const videoEl = this.data.target;
+                        if (this.el.getAttribute('visible')) {
+                            videoEl.play();
+                        } else {
+                            videoEl.pause();
+                        }
+                    }
+                });
+            }
+        });
     </script>
 </body>
 
