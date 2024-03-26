@@ -1,0 +1,11 @@
+Model Information:
+* title:	Goku
+* source:	https://sketchfab.com/3d-models/goku-9d823aca856a41f5b438037267694539
+* author:	tronazo (https://sketchfab.com/tronazo)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Goku" (https://sketchfab.com/3d-models/goku-9d823aca856a41f5b438037267694539) by tronazo (https://sketchfab.com/tronazo) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
